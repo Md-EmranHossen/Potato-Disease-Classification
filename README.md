@@ -1,1 +1,1 @@
-# Result-Management-System 
+# Potato-Disease-Classification
