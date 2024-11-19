@@ -1,1 +1,0 @@
-print("Potato-Disease-Classification");
