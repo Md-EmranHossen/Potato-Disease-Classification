@@ -19,7 +19,7 @@ CHANNEL = 3
 EPOCHS = 20
 
 
-# func prepare & predict
+# Function to preprocess and predict
 def predict(img):
     img_array = tf.keras.preprocessing.image.img_to_array(img)
     img_array = tf.expand_dims(img_array, 0)
@@ -30,7 +30,7 @@ def predict(img):
     confidence = round(100 * (np.max(predictions[0])), 2)
     return predicted_class, confidence
 
-# Route to the home page
+# home page routing
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
