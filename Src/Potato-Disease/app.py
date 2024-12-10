@@ -51,7 +51,7 @@ def home():
             file.save(filepath)
 
             # image reading update
-            img = tf.keras.preprocessing.image.load_img(filepath, target_size=(IMAGE_size, IMAGE_SIZE))
+            img = tf.keras.preprocessing.image.load_img(filepath, target_size=(IMAGE_SIZE, IMAGE_SIZE))
 
             # Predict using the loaded model
             predicted_class, confidence = predict(img)
