@@ -6,7 +6,11 @@ import numpy as np
 
 app = Flask(__name__)
 
-# Load the model
+
+
+
+
+# model load
 model = tf.keras.models.load_model('model.h5')
 class_names = ['Potato___Early_blight', 'Potato___Late_blight', 'Potato___healthy']
 BATCH_SIZE = 32
@@ -15,7 +19,7 @@ CHANNEL = 3
 EPOCHS = 20
 
 
-# Function to preprocess and predict
+# func prepare & predict
 def predict(img):
     img_array = tf.keras.preprocessing.image.img_to_array(img)
     img_array = tf.expand_dims(img_array, 0)
