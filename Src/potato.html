@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Image Prediction</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        background: url("./potato.jpg") no-repeat center center fixed;
+        background-size: cover;
+        font-family: "Arial", sans-serif;
+      }
+
+      .container {
+        display: none; /* Initially hidden */
+        background: rgba(173, 216, 230, 0.5); /* Light blue with increased opacity */
+        border-radius: 15px;
+        padding: 30px;
+        max-width: 800px;
+        margin: 50px auto;
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(173, 216, 230, 0.6);
+      }
+
+      h1 {
+        color: #4b2e02;
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+        padding-top: 10px;
+      }
+
+      .form-label {
+        color: red;
+        font-weight: bold;
+      }
+
+      .btn-primary {
+        background-color: #007bff;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+      }
+
+      .img-fluid {
+        max-width: 100%;
+        height: auto;
+        border-radius: 15px;
+        margin-top: 20px;
+        transition: transform 0.3s ease;
+      }
+
+      .img-fluid:hover {
+        transform: scale(1.05);
+      }
+
+      .message {
+        color: red;
+        font-weight: bold;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      .result-text {
+        font-size: 1.2rem;
+      }
+
+      /* Loading Spinner */
+      .loading {
+        display: none;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .loading img {
+        width: 50px;
+        height: 50px;
+      }
+
+      /* Animation for fading text */
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* File input preview */
+      #fileInput {
+        margin-top: 10px;
+        margin-bottom: 15px;
+      }
+
+      #filePreview {
+        display: none;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      #filePreview img {
+        width: 100%;
+        max-width: 300px;
+        border-radius: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Removed the external heading and moved it inside the container -->
+    <div class="text-center mt-4">
+      <button class="btn btn-primary" id="showContainerBtn" style="margin: 16rem;">Prediction</button>
+    </div>
+
+    <!-- Hidden Container -->
+    <div class="container">
+      <h1 class="text-center">Crop Potato Disease Classification (Prediction)</h1> <!-- Inside the container now -->
+
+      <!-- Camera and File Upload Options -->
+      <form
+        action="/"
+        method="post"
+        enctype="multipart/form-data"
+        class="mb-4"
+        id="predictForm"
+      >
+        <label for="fileInput" class="form-label"
+          >Choose an image file* :</label
+        >
+        <input
+          type="file"
+          id="fileInput"
+          name="file"
+          accept=".jpg, .jpeg, .png"
+          class="form-control"
+          onchange="previewImage(event)"
+        />
+        <button type="submit" class="btn btn-primary mt-2" id="submitBtn">
+          Predict
+        </button>
+
+        <div class="loading" id="loading">
+          <img src="https://i.gifer.com/7pl3.gif" alt="Loading..." />
+        </div>
+
+        <br /><br />
+
+        {% if message %}
+        <p class="text-danger message">{{ message }}</p>
+        {% endif %} {% if image_path %}
+        <div id="filePreview">
+          <img
+            src="{{ image_path }}"
+            alt="Uploaded Image"
+            class="img-fluid rounded"
+          />
+        </div>
+        <div class="result-text mt-3">
+          <p>Actual Label: <strong>{{ actual_label }}</strong></p>
+          <p>Predicted Label: <strong>{{ predicted_label }}</strong></p>
+          <p>Confidence: <strong>{{ confidence }}%</strong></p>
+        </div>
+        {% endif %}
+      </form>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      // Show the container when "Prediction" button is clicked
+      const showContainerBtn = document.getElementById("showContainerBtn");
+      const container = document.querySelector(".container");
+
+      showContainerBtn.addEventListener("click", function () {
+        container.style.display = "block"; // Show the container
+        showContainerBtn.style.display = "none"; // Hide the button
+      });
+
+      // File input preview function
+      function previewImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const preview = document.getElementById("filePreview");
+            preview.style.display = "block";
+            preview.innerHTML = `<img src="${e.target.result}" alt="Image Preview">`;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      // Form submit listener
+      const form = document.getElementById("predictForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const loading = document.getElementById("loading");
+      form.addEventListener("submit", function (event) {
+        submitBtn.disabled = true;
+        loading.style.display = "block";
+      });
+    </script>
+  </body>
+</html>
