@@ -7,7 +7,7 @@ import numpy as np
 app = Flask(__name__)
 
 
-
+ 
 # model load and integreating feature
 model = tf.keras.models.load_model('model.h5')
 class_names = ['Potato___Early_blight', 'Potato___Late_blight', 'Potato___healthy']
