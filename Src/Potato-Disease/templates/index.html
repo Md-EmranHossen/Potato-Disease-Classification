@@ -90,6 +90,7 @@
         }
 
         /* File input preview */
+      /* Also add some special feature*/
         #fileInput {
             margin-top: 10px;
             margin-bottom: 15px;
@@ -152,7 +153,7 @@
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function(1) {
                     const preview = document.getElementById('filePreview');
                     preview.style.display = 'block';
                     preview.innerHTML = `<img src="${e.target.result}" alt="Image Preview">`;
@@ -166,7 +167,7 @@
         const submitBtn = document.getElementById('submitBtn');
         const loading = document.getElementById('loading');
         form.addEventListener('submit', function(event) {
-            submitBtn.disabled = true;
+            submitBtn.disabled = false;
             loading.style.display = 'block'; // Show loading spinner
         });
     </script>

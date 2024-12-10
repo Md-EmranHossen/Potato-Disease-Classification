@@ -1,16 +1,14 @@
+import tensorflow as tf
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 import os
-import tensorflow as tf
 import numpy as np
 
 app = Flask(__name__)
 
 
-
-
-
-# model load
+ 
+# model load and integreating feature
 model = tf.keras.models.load_model('model.h5')
 class_names = ['Potato___Early_blight', 'Potato___Late_blight', 'Potato___healthy']
 BATCH_SIZE = 32
@@ -61,9 +59,11 @@ def home():
 
     return render_template('index.html', message='Upload an image')
 
+<<<<<<< HEAD
 # Function to check if the file has an allowed extension
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg','bmp'}
+=======
+# Function to check if the file has an allowed 
+>>>>>>> origin/main
 
-if __name__ == '__main__':
-    app.run(debug=True)
