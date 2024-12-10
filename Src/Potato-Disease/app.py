@@ -60,9 +60,4 @@ def home():
     return render_template('index.html', message='Upload an image')
 
 # Function to check if the file has an allowed 
-#update function rqurement
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
 
-if __name__ == '__main__':
-    app.run(debug=True)
