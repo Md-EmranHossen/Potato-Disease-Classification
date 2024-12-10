@@ -50,7 +50,7 @@ def home():
             filepath = os.path.join('static', filename)
             file.save(filepath)
 
-            # Read the image
+            # image reading update
             img = tf.keras.preprocessing.image.load_img(filepath, target_size=(IMAGE_SIZE, IMAGE_SIZE))
 
             # Predict using the loaded model
