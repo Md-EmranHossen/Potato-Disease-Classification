@@ -1,7 +1,7 @@
+import tensorflow as tf
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 import os
-import tensorflow as tf
 import numpy as np
 
 app = Flask(__name__)
